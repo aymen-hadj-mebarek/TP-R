@@ -2,6 +2,7 @@ import java.util.*;
 import org.json.simple.*;
 
 public class Exceptions {
+    // Retrieves the label of a node given its relationship to another node
     public static String getLabel(JSONObject reseauSemantique, JSONObject node, String relation) {
         List<String> nodeRelationEdgesLabel = new ArrayList<>();
         JSONArray edges = (JSONArray) reseauSemantique.get("edges");
@@ -21,6 +22,7 @@ public class Exceptions {
         return "il y a un lien entre les 2 noeuds : " + String.join(", ", nodeRelationEdgesLabel);
     }
 
+    // Performs marker propagation between nodes with exceptions handling
     public static List<String> propagationDeMarqueurs(JSONObject reseauSemantique, List<String> node1, List<String> node2, String relation) {
         List<String> solutionsFound = new ArrayList<>();
         JSONArray nodes = (JSONArray) reseauSemantique.get("nodes");
@@ -33,6 +35,7 @@ public class Exceptions {
                 JSONObject M1 = null;
                 JSONObject M2 = null;
 
+                // Find the nodes by their labels
                 for (Object o : nodes) {
                     JSONObject node = (JSONObject) o;
                     if (node.get("label").equals(node1.get(i))) {
@@ -48,6 +51,7 @@ public class Exceptions {
                     continue;
                 }
 
+                // Find all "is_a" edges leading to M1, excluding those with "edge_type" attribute
                 List<JSONObject> propagationEdges = new ArrayList<>();
                 for (Object o : edges) {
                     JSONObject edge = (JSONObject) o;
@@ -56,6 +60,7 @@ public class Exceptions {
                     }
                 }
 
+                // Traverse the "is_a" edges to find the relationship to M2
                 while (!propagationEdges.isEmpty() && !solutionFound) {
                     JSONObject tempNode = propagationEdges.remove(propagationEdges.size() - 1);
                     List<JSONObject> tempNodeContientEdges = new ArrayList<>();

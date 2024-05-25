@@ -2,6 +2,7 @@ import java.util.*;
 import org.json.simple.*;
 
 public class Heritage {
+    // Retrieves the label of a node given its ID
     public static String getLabel(JSONObject reseauSemantique, String nodeId) {
         JSONArray nodes = (JSONArray) reseauSemantique.get("nodes");
         for (Object o : nodes) {
@@ -13,6 +14,7 @@ public class Heritage {
         return "";
     }
 
+    // Performs the heritage algorithm to find all inherited nodes
     public static List<String> heritage(JSONObject reseauSemantique, String name) {
         List<String> legacy = new ArrayList<>();
         boolean theEnd = false;
@@ -20,6 +22,7 @@ public class Heritage {
         JSONArray nodes = (JSONArray) reseauSemantique.get("nodes");
         JSONArray edges = (JSONArray) reseauSemantique.get("edges");
 
+        // Find the node by its name
         JSONObject node = null;
         for (Object o : nodes) {
             JSONObject n = (JSONObject) o;
@@ -33,6 +36,7 @@ public class Heritage {
             return legacy;
         }
 
+        // Find all "is_a" edges from the node
         List<String> legacyEdges = new ArrayList<>();
         for (Object o : edges) {
             JSONObject edge = (JSONObject) o;
@@ -41,6 +45,7 @@ public class Heritage {
             }
         }
 
+        // Traverse the "is_a" edges to find all inherited nodes
         while (!theEnd) {
             if (legacyEdges.isEmpty()) {
                 theEnd = true;
@@ -58,11 +63,13 @@ public class Heritage {
         return legacy;
     }
 
+    // Retrieves all properties of a node, including inherited properties
     public static List<String> getProperties(JSONObject reseauSemantique, String name) {
         List<String> properties = new ArrayList<>();
         JSONArray nodes = (JSONArray) reseauSemantique.get("nodes");
         JSONArray edges = (JSONArray) reseauSemantique.get("edges");
 
+        // Find the node by its name
         JSONObject node = null;
         for (Object o : nodes) {
             JSONObject n = (JSONObject) o;
@@ -76,6 +83,7 @@ public class Heritage {
             return properties;
         }
 
+        // Find all "is_a" edges from the node
         List<String> legacyEdges = new ArrayList<>();
         for (Object o : edges) {
             JSONObject edge = (JSONObject) o;
@@ -84,6 +92,7 @@ public class Heritage {
             }
         }
 
+        // Traverse the "is_a" edges to find all inherited properties
         while (!legacyEdges.isEmpty()) {
             String n = legacyEdges.remove(legacyEdges.size() - 1);
             List<JSONObject> propertiesNodes = new ArrayList<>();
