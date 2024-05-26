@@ -1,0 +1,7 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\Aymen GLX\\Downloads\\json-simple-1.1.1.jar",
+        "c:\\Users\\Aymen GLX\\Downloads\\org.tweetyproject.tweety-full-1.25-with-dependencies.jar"
+    ]
+}
